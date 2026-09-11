@@ -15,19 +15,51 @@ ASTUCE : BFS (car on veut le chemin le PLUS COURT).
       arriver).
 """
 
+# ALPHABET = "abcdefghijklmnopqrstuvwxyz"
+
+
+# def word_ladder_length(
+#     begin_word: str, end_word: str, word_list: list[str]
+# ) -> int:
+#     mots_dispo = set(word_list)
+#     if end_word not in mots_dispo:
+#         return 0
+
+#     file = [(begin_word, 1)]
+#     tete = 0
+#     mots_dispo.discard(begin_word)
+
+#     while tete < len(file):
+#         mot, longueur = file[tete]
+#         tete += 1
+
+#         if mot == end_word:
+#             return longueur
+
+#         for i in range(len(mot)):
+#             for lettre in ALPHABET:
+#                 if lettre == mot[i]:
+#                     continue
+#                 voisin = mot[:i] + lettre + mot[i + 1:]
+#                 if voisin in mots_dispo:
+#                     mots_dispo.discard(voisin)
+#                     file.append((voisin, longueur + 1))
+
+#     return 0
+
 ALPHABET = "abcdefghijklmnopqrstuvwxyz"
 
+def word_ladder_length(begin_word: str, end_word: str, word_list: list[str]) -> int: # noqa
+    if not word_list:
+        return 0
 
-def word_ladder_length(
-    begin_word: str, end_word: str, word_list: list[str]
-) -> int:
-    mots_dispo = set(word_list)
-    if end_word not in mots_dispo:
+    mot_dispo = set(word_list)
+    if end_word not in mot_dispo:
         return 0
 
     file = [(begin_word, 1)]
     tete = 0
-    mots_dispo.discard(begin_word)
+    mot_dispo.discard(begin_word)
 
     while tete < len(file):
         mot, longueur = file[tete]
@@ -37,14 +69,13 @@ def word_ladder_length(
             return longueur
 
         for i in range(len(mot)):
-            for lettre in ALPHABET:
-                if lettre == mot[i]:
+            for letter in ALPHABET:
+                if letter == mot[i]:
                     continue
-                voisin = mot[:i] + lettre + mot[i + 1:]
-                if voisin in mots_dispo:
-                    mots_dispo.discard(voisin)
+                voisin = mot[:i] + letter + mot[i + 1:]
+                if voisin in mot_dispo:
+                    mot_dispo.discard(voisin)
                     file.append((voisin, longueur + 1))
-
     return 0
 
 
@@ -52,6 +83,12 @@ if __name__ == "__main__":
     tests = [
         (("hit", "cog", ["hot", "dot", "dog", "lot", "log", "cog"]), 5),
         (("hit", "cog", ["hot", "dot", "dog", "lot", "log"]), 0),
+        (("hot", "dot", ["dot"]), 2),
+        (("hot", "dog", ["hot", "dot", "dog"]), 3),
+        (("game", "thee", ["thee"]), 0),
+        (("a", "c", ["a", "b", "c"]), 2),
+        (("hit", "cog", []), 0),
+        (("hit", "cog", ["hot", "dot", "dog", "lot", "log", "cog", "hog"]), 4),
     ]
 
     for args, attendu in tests:
